@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= product.nombre %> - Detalle del Producto</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; line-height: 1.6; background-color: #f4f4f4; color: #333; }
+        .container { max-width: 800px; margin: auto; background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        h1 { color: #0056b3; text-align: center; margin-bottom: 25px;}
+        h2 { color: #0056b3; margin-top: 25px; border-bottom: 1px solid #eee; padding-bottom: 10px;}
+        p { margin-bottom: 10px; }
+        strong { color: #555; }
+        .product-image { text-align: center; margin-bottom: 20px; }
+        .product-image img { max-width: 100%; height: auto; border-radius: 8px; }
+        .actions { text-align: center; margin-top: 30px; }
+        .actions a {
+            display: inline-block;
+            background-color: #28a745;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 5px;
+            transition: background-color 0.3s ease;
+        }
+        .actions a:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Detalles de <%= product.nombre %></h1>
+
+        <div class="product-info">
+            <p><strong>Número de Serie:</strong> <%= product.numero_serie %></p>
+            <p><strong>Fabricante:</strong> <%= product.fabricante %></p>
+            <p><strong>Descripción:</strong> <%= product.descripcion %></p>
+            <p><strong>Precio:</strong> $<%= product.precio ? product.precio.toFixed(2) : 'N/A' %></p>
+            <p><strong>UUID de QR:</strong> <%= product.qr_uuid %></p>
+            </div>
+
+        <div class="actions">
+            <a href="https://misitio.com/soporte?serie=<%= product.numero_serie %>" target="_blank">Contacto de Soporte</a>
+            <a href="https://misitio.com/manuales?modelo=<%= encodeURIComponent(product.nombre) %>" target="_blank">Manual de Usuario</a>
+        </div>
+    </div>
+</body>
+</html>
