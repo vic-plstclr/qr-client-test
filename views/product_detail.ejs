@@ -3,20 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><%= product.nombre %> - Detalle del Producto</title>
+    <title><%= product.name %> - Detalle del Producto</title>
     <style>
         body { font-family: Arial, sans-serif; margin: 20px; line-height: 1.6; background-color: #f4f4f4; color: #333; }
-        .container { max-width: 800px; margin: auto; background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-        .header { background:#999; color: #333; text-align: center; margin-bottom: 20px; }
+        .container { max-width: 800px; margin: auto;}
+        .header { background:#bbb; color: #333; text-align: center; margin-bottom: 20px; padding: 10px; border-radius: 8px; }
+        .header-detail {
+            font-size: 10px;
+            width: 100%;
+        }
         h1 { color: #0056b3; text-align: center; margin-bottom: 25px;}
         h2 { color: #0056b3; margin-top: 25px; border-bottom: 1px solid #eee; padding-bottom: 10px;}
         p { margin-bottom: 10px; }
         strong { color: #555; }
         .product-image { text-align: center; margin-bottom: 20px; }
         .product-image img { max-width: 100%; height: auto; border-radius: 8px; }
-        .actions { text-align: center; margin-top: 30px; }
+        .actions {
+            text-align: center;
+            margin-top: 30px;
+            display: flex;
+            flex-direction: column;
+            flex-wrap: nowrap;
+            align-content: center;
+            justify-content: center;
+            align-items: stretch;
+        }
         .actions a {
-            display: inline-block;
+            display: flex;
             background-color: #28a745;
             color: white;
             padding: 10px 20px;
@@ -24,31 +37,226 @@
             border-radius: 5px;
             margin: 5px;
             transition: background-color 0.3s ease;
+            flex-direction: row;
+            flex-wrap: nowrap;
+            align-content: center;
+            justify-content: center;
+            align-items: center;
         }
         .actions a:hover {
             background-color: #218838;
+        }
+
+        .content {
+            margin-top: 30px;
+            max-width: 800px;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .recomended-products {
+            margin-top: 30px;
+            max-width: 800px;
+            margin: auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .recommended-products-list {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            flex-wrap: nowrap;
+            gap: 20px;
+            flex-direction: column;
+            align-content: center;
+            justify-content: center;
+            align-items: center;
+        }
+        .recommended-product-li {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+            background: #fff;
+            width: 100%;
+        }
+        .recommended-product-a {
+            align-items: center;
+            display: flex;
+            flex-direction: column;
+            flex-wrap: nowrap;
+            text-decoration: none;
+            max-width: 80%;
+            padding: 40px;
+        }
+        .recommended-product-image {
+            object-fit: cover;
+            border-radius: 8px 0 0 8px;
+            width: 32%;
+        }
+        .recommended-product-title {
+            color: #000;
+            font-weight: 700;
+            font-size: 20px;
+            margin-top: 15px;
+        }
+        .recommended-product-description {
+            color: #595959;
+            font-size: 14px;
+            margin-top: 16px;
+        }
+
+
+        .promotion {
+            margin-top: 30px;
+            max-width: 800px;
+            margin: auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: row;
+        }
+
+        .promotion-banner {
+            position: sticky;
+            top: 0;
+            background: #e5233e;
+            color: #fff;
+            font-size: 19px;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h4>Metadatos: No van a ser visibles para el cliente, solo para la empresa.</h4> 
+            <h4 style="font-size: 12px; margin:0 0 0 10px;">Metadatos: No van a ser visibles para el cliente, solo personal tecnico de Barnes.</h4> 
+            <div style="display: flex;flex-direction: column;flex-wrap: nowrap;align-content: center;justify-content: center;align-items: center;">
+                <div class="header-detail"><strong>UUID:</strong> <%= product.qr_uuid %></div>
+                <div class="header-detail"><strong>Fecha de Fabricación:</strong> <%= product.product_fabrication_date %></div>
+                <div class="header-detail"><strong>Poducto:</strong> <%= product.name %></div>
+                <div class="header-detail"><strong>Serie:</strong> <%= product.product_serial_number %></div>
+                <div class="header-detail"><strong>Fecha de Instalación:</strong> <%= product.installation_date %></div>
+            </div>
         </div>
 
-        <h1>Detalles de <%= product.nombre %></h1>
+        <% if (product.discount == "true") { %>
+            <div class="promotion">
+                <div>
+                    <div>
+                        DESCUENTO
+                    </div>
+                    <div style="font-size:15vw; font-weight:800;">
+                        10%
+                    </div>
+                </div>
+                <div>
+                    <h2>Promoción Especial</h2>
+                    
+                    <img style="width:20%" src="https://www.ydengine.net/uploads/201925300/yangdong-generator-diesel-engine07568593504.jpg" alt="Producto Recomendado 1">
+                    <div>Motor Diesel Generador Yangdong YD380D</div>
+                    <p>¡Aprovecha nuestra oferta especial! Compra ahora y obtén un 10% de descuento en tu próxima compra.</p>
+                    <p>Usa el código: <strong>DESCUENTO10</strong> al finalizar tu compra.</p>
+                    <p>Oferta válida hasta el <span id="ofert"></span></p>
+                </div>
 
-        <div class="product-info">
-            <p><strong>Número de Serie:</strong> <%= product.numero_serie %></p>
-            <p><strong>Fabricante:</strong> <%= product.fabricante %></p>
-            <p><strong>Descripción:</strong> <%= product.descripcion %></p>
-            <p><strong>Precio:</strong> $<%= product.precio ? product.precio.toFixed(2) : 'N/A' %></p>
-            <p><strong>UUID de QR:</strong> <%= product.qr_uuid %></p>
+                <div class="promotion-banner">
+                    Vence en: 
+                    <span id="countdown"></span>
+                </div>
             </div>
 
-        <div class="actions">
-            <a href="https://misitio.com/soporte?serie=<%= product.numero_serie %>" target="_blank">Contacto de Soporte</a>
-            <a href="https://misitio.com/manuales?modelo=<%= encodeURIComponent(product.nombre) %>" target="_blank">Manual de Usuario</a>
+            <script>
+                // Obtén la fecha de finalización desde el servidor (asegúrate de que esté en formato ISO)
+                const promotionEndDate = new Date("<%= promotionEndDate.toISOString() %>");
+
+                function updateCountdown() {
+                    const now = new Date();
+                    const diff = promotionEndDate - now;
+
+                    if (diff <= 0) {
+                    document.getElementById('countdown').innerText = "¡Promoción finalizada!";
+                    clearInterval(timer);
+                    return;
+                    }
+
+                    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                    const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+                    const minutes = Math.floor((diff / (1000 * 60)) % 60);
+                    const seconds = Math.floor((diff / 1000) % 60);
+
+                    document.getElementById('countdown').innerText =
+                    `${days} días, ${hours} horas, ${minutes} minutos, ${seconds} segundos`;
+
+                    document.getElementById('ofert').innerText = 
+                    `${promotionEndDate.toLocaleDateString()} ${promotionEndDate.toLocaleTimeString()}`;
+                }
+
+                updateCountdown();
+                const timer = setInterval(updateCountdown, 1000);
+            </script>
+        <% } %>
+
+        <div class="content">
+            <h1>Detalles de <%= product.nombre %></h1>
+
+            <div>
+
+                <div class="product-image">
+                    <img src="<%= product.product_image %>" alt="Imagen no disponible"/>
+                </div>
+
+                <div class="product-info">
+                    <p><strong>Número de Serie:</strong> <%= product.numero_serie %></p>
+                    <p><strong>Fabricante:</strong> <%= product.fabricante %></p>
+                    <p><strong>Descripción:</strong> <%= product.descripcion %></p>
+                    <p><strong>Precio:</strong> $<%= product.precio ? product.precio.toFixed(2) : 'N/A' %></p>
+                    <p><strong>UUID de QR:</strong> <%= product.qr_uuid %></p>
+                </div>
+
+            </div>
+
+            <div class="actions">
+                <a href="https://misitio.com/productos" target="_blank">Guia de Instalacion</a>
+                <a href="https://misitio.com/soporte?serie=<%= product.numero_serie %>" target="_blank">Contacto de Soporte</a>
+                <a href="https://misitio.com/manuales?modelo=<%= encodeURIComponent(product.nombre) %>" target="_blank">Manual de Usuario</a>
+                <a href="https://genmann.com/wp-content/uploads/2023/05/ficha_13kW-GMD13-YD480D.pdf" target="_blank">Ficha Tecnica</a>
+            </div>
+
+        </div>
+
+        <div class="recommended-products">
+            <h2>Refacciones recomendadas</h2>
+            <ul class="recommended-products-list">
+                <li class="recommended-product-li">
+                    <a class="recommended-product-a" href="https://www.barmesapumps.com" target="_blank">
+                        <img class="recommended-product-image" src="https://www.ydengine.net/uploads/201925300/yangdong-generator-diesel-engine07568593504.jpg" alt="Producto Recomendado 1">
+                        <div class="recommended-product-title">Motor Diesel Generador Yangdong YD380D</div>
+                        <div class="recommended-product-description">La potencia del motor diesel del grupo electrógeno de la serie Yangdong varía de 10kw a 100kw, incluidos los motores de la serie de tres y cuatro cilindros</div>
+                    </a>
+                </li>
+                <li class="recommended-product-li">
+                    <a class="recommended-product-a" href="https://www.barmesapumps.com" target="_blank">
+                        <img class="recommended-product-image" src="https://i5.walmartimages.com/asr/09b6e971-cbf1-4b1f-b43f-deff42b37b23.67a072b72d96784f74266accf2c0252e.jpeg" alt="Producto Recomendado 1">
+                        <div class="recommended-product-title">Regulador de voltaje automático modelo AS440</div>
+                        <div class="recommended-product-description">Placa de regulación de voltaje con rango de voltaje ajustable, estabilidad de alto voltaje, monofásico dedicado y ajustable de 50 HZ a 60 HZ. 3.Material ABS: hecho de material ABS de primera calidad, no es probable que esta placa de regulación de voltaje se deforme y también tiene una excelente durabilidad durante largas horas de trabajo.</div>
+                    </a>
+                </li>
+                <li class="recommended-product-li">
+                    <a class="recommended-product-a" href="https://www.barmesapumps.com" target="_blank">
+                        <img class="recommended-product-image" src="https://m.media-amazon.com/images/I/61P5KegY8ZL._AC_SL1001_.jpg" alt="Producto Recomendado 1">
+                        <div class="recommended-product-title">Módulo de control de fallos de la red eléctrica DSE6120</div>
+                        <div class="recommended-product-description">Módulo de control de fallos DSE6120 MKII Auto Mains (Utility) El DSE 6120 MKII es un módulo de control de fallos de red automática (Utility) desarrollado para proporcionar una amplia gama de características de funcionamiento y monitoreo para conjuntos de genes de diesel y gas individuales.</div>
+                    </a>
+                </li>
+            </ul>
         </div>
     </div>
 </body>

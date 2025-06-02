@@ -18,7 +18,7 @@ app.use(express.json());
 
 let products = [];
 // Duración del caché de los productos (5 minutos)
-const CACHE_DURATION_MS = 3 * 1000; 
+const CACHE_DURATION_MS = 10 * 1000; 
 let lastFetchTime = 0;
 
 // Función auxiliar para normalizar UUIDs
@@ -133,11 +133,13 @@ app.get('/:qr_uuid', async (req, res) => {
 
     // Realiza la búsqueda del producto usando los UUIDs normalizados
     const product = products.find(p => p.qr_uuid === requestedUuid); 
+    const promotionEndDate = new Date('2025-06-06T00:00:00Z');
+
     console.log('Found product:', product);
 
     if (product) {
         console.log(`Product found for UUID: ${requestedUuid}. Name: ${product.nombre}`);
-        res.render('product_detail', { product: product });
+        res.render('product_detail', { product: product, promotionEndDate: promotionEndDate });
     } else {
         console.log(`Product not found for UUID: ${requestedUuid}`);
         res.status(404).render('404_product_not_found');
