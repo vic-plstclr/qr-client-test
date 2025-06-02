@@ -47,6 +47,13 @@
             background-color: #218838;
         }
 
+        .actions a.whatsapp-promo {
+            background-color: #28a745;
+        }
+        .actions a.chatbot-promo {
+            background-color: #2a54c7;
+        }
+
         .content {
             margin-top: 30px;
             max-width: 800px;
@@ -98,7 +105,8 @@
         .recommended-product-image {
             object-fit: cover;
             border-radius: 8px 0 0 8px;
-            width: 32%;
+            max-width: 32%;
+            height: auto;
         }
         .recommended-product-title {
             color: #000;
@@ -122,15 +130,47 @@
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             display: flex;
-            flex-direction: row;
+            flex-direction: column;
         }
 
         .promotion-banner {
-            position: sticky;
-            top: 0;
+            position: fixed;
+            bottom: 0;
+            left: 0;
             background: #e5233e;
             color: #fff;
-            font-size: 19px;
+            font-size: 16px;
+            width: 100%;
+            padding: 12px;
+        }
+
+        .promotion-timer-container {
+            display: flex;
+            flex-direction: column;
+            flex-wrap: nowrap;
+            justify-content: center;
+            align-items: center;
+            margin: 0 8px;
+        }
+
+        .promotion-timer-number {
+            font-size: 6vw;
+            font-weight: 900;
+        }
+
+        .promotion-timer-title {
+            font-size: 2.85vw;
+        }
+
+        .maintenance-list {
+            list-style: none;
+            padding: 0;
+        }
+        .maintenance-item {
+            background: #f7f7f7;
+            padding: 10px;
+            margin: 16px;
+            border-radius: 5px;
         }
     </style>
 </head>
@@ -143,33 +183,61 @@
                 <div class="header-detail"><strong>Fecha de Fabricación:</strong> <%= product.product_fabrication_date %></div>
                 <div class="header-detail"><strong>Poducto:</strong> <%= product.name %></div>
                 <div class="header-detail"><strong>Serie:</strong> <%= product.product_serial_number %></div>
-                <div class="header-detail"><strong>Fecha de Instalación:</strong> <%= product.installation_date %></div>
+                <div class="header-detail"><strong>Lote:</strong> <%= product.product_lot_number %></div>
+                <div class="header-detail"><strong>Fecha de adquisición:</strong> <%= product.buy_date %></div>
+                <div class="header-detail"><strong>Fecha de instalación:</strong> <%= product.installation_date %></div>
+                <div class="header-detail"><strong>Instalado por:</strong> <%= product.installed_by %></div>
+                <div class="header-detail"><strong>Fecha de garantia:</strong> <%= product.product_warranty_due_date %></div>
+                <div class="header-detail"><strong>Canal de soporte:</strong> <%= product.support_channel %></div>
+                <div class="header-detail"><strong>Cliente:</strong> <%= product.owner_company %></div>
+                <div class="header-detail"><strong>Email de cliente:</strong> <%= product.owner_email %></div>
+                <div class="header-detail"><strong>Telefono de cliente:</strong> <%= product.owner_phone %></div>
+                <div class="header-detail"><strong>Dirección de cliente:</strong> <%= product.owner_address %></div>
+                <div class="header-detail"><strong>Ciudad de cliente:</strong> <%= product.owner_city %></div>
+                <div class="header-detail"><strong>Estado de cliente:</strong> <%= product.owner_state %></div>
+                <div class="header-detail"><strong>País de cliente:</strong> <%= product.owner_country %></div>
             </div>
         </div>
 
         <% if (product.discount == "true") { %>
             <div class="promotion">
-                <div>
-                    <div>
+                <div style="background: #e5233e;color: #fff;padding: 14px;border-radius: 6px;text-align: center;">
+                    <h2 style="margin-top:0;padding-bottom: 4px;font-size: 7vw; color:#fff">Promoción Especial</h2>
+                    <div style="font-size: 3vw;font-weight: 600;">
                         DESCUENTO
                     </div>
-                    <div style="font-size:15vw; font-weight:800;">
+                    <div style="font-size: 20vw;font-weight: 800;display: inline-block;line-height: 1;">
                         10%
                     </div>
+                    <p>Oferta válida hasta el <span id="ofert"></span></p>
                 </div>
-                <div>
-                    <h2>Promoción Especial</h2>
-                    
-                    <img style="width:20%" src="https://www.ydengine.net/uploads/201925300/yangdong-generator-diesel-engine07568593504.jpg" alt="Producto Recomendado 1">
-                    <div>Motor Diesel Generador Yangdong YD380D</div>
+                <div style="display: flex;flex-direction: column;align-items: center;justify-content: center;margin-top: 30px;">
+                    <img style="width:50%" src="https://www.ydengine.net/uploads/201925300/yangdong-generator-diesel-engine07568593504.jpg" alt="Producto Recomendado 1">
+                    <div style="font-size: 4vw;font-weight: 600;">Motor Diesel Generador Yangdong YD380D</div>
                     <p>¡Aprovecha nuestra oferta especial! Compra ahora y obtén un 10% de descuento en tu próxima compra.</p>
                     <p>Usa el código: <strong>DESCUENTO10</strong> al finalizar tu compra.</p>
-                    <p>Oferta válida hasta el <span id="ofert"></span></p>
                 </div>
 
                 <div class="promotion-banner">
                     Vence en: 
-                    <span id="countdown"></span>
+                    <div style="display:flex;flex-direction: row;">
+                        <div class="promotion-timer-container">
+                            <div class="promotion-timer-number"><span id="days"></span></div>
+                            <div class="promotion-timer-title">Días</div>
+                        </div>
+                        <div class="promotion-timer-container">
+                            <div class="promotion-timer-number"><span id="hours"></span></div>
+                            <div class="promotion-timer-title">Horas</div>
+                        </div>
+                        <div class="promotion-timer-container">
+                            <div class="promotion-timer-number"><span id="minutes"></span></div>
+                            <div class="promotion-timer-title">Minutos</div>
+                        </div>
+                        <div class="promotion-timer-container">
+                            <div class="promotion-timer-number"><span id="seconds"></span></div>
+                            <div class="promotion-timer-title">Segundos</div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -192,8 +260,10 @@
                     const minutes = Math.floor((diff / (1000 * 60)) % 60);
                     const seconds = Math.floor((diff / 1000) % 60);
 
-                    document.getElementById('countdown').innerText =
-                    `${days} días, ${hours} horas, ${minutes} minutos, ${seconds} segundos`;
+                    document.getElementById('days').innerText = `${days}`;
+                    document.getElementById('hours').innerText = `${hours}`;
+                    document.getElementById('minutes').innerText = `${minutes}`;
+                    document.getElementById('seconds').innerText = `${seconds}`;
 
                     document.getElementById('ofert').innerText = 
                     `${promotionEndDate.toLocaleDateString()} ${promotionEndDate.toLocaleTimeString()}`;
@@ -205,7 +275,7 @@
         <% } %>
 
         <div class="content">
-            <h1>Detalles de <%= product.nombre %></h1>
+            <h1>Detalles de <%= product.name %></h1>
 
             <div>
 
@@ -214,19 +284,43 @@
                 </div>
 
                 <div class="product-info">
-                    <p><strong>Número de Serie:</strong> <%= product.numero_serie %></p>
-                    <p><strong>Fabricante:</strong> <%= product.fabricante %></p>
-                    <p><strong>Descripción:</strong> <%= product.descripcion %></p>
-                    <p><strong>Precio:</strong> $<%= product.precio ? product.precio.toFixed(2) : 'N/A' %></p>
-                    <p><strong>UUID de QR:</strong> <%= product.qr_uuid %></p>
+                    <h2>Información del Producto</h2>
+                    <p><strong>Número de Serie:</strong> <%= product.product_serial_number %></p>
+                    <p><strong>Modelo:</strong> <%= product.product_model %></p>
+                    <p><strong>Vencimiento de garantia:</strong> <%= promotionEndDateFormatted %></p>
+                    <p><strong>Descripción:</strong> <%= product.description %></p>
+                </div>
+                <div class="product-info">
+                    <h2>Información de Instalación</h2>
+                    <p><strong>Fecha de Instalación:</strong> <%= product.installation_date %></p>
+                    <p><strong>Instalado por:</strong> <%= product.installed_by %></p>
                 </div>
 
             </div>
 
+            <div class="product-info">
+                <h2>Registro de Mantenimiento y Servicio</h2>
+                <div style="border-radius: 10px;">
+                    <% if (product.maintenance_history && product.maintenance_history.length > 0) { %>
+                        <ul class="maintenance-list">
+                            <% product.maintenance_history.forEach(function(entry) { %>
+                                <li class="maintenance-item">
+                                    <p><strong class="date">Fecha:</strong> <%= entry.date %></p>
+                                    <p><strong>Acción realizada:</strong> <%= entry.action_performed %></p>
+                                    <p><strong>Realizado por:</strong> <%= entry.performed_by %></p>
+                                </li>
+                            <% }); %>
+                        </ul>
+                    <% } else { %>
+                        <p>No hay registros de mantenimiento y servicio para este producto.</p>
+                    <% } %>
+                </div>
+            </div>
+
             <div class="actions">
-                <a href="https://misitio.com/productos" target="_blank">Guia de Instalacion</a>
-                <a href="https://misitio.com/soporte?serie=<%= product.numero_serie %>" target="_blank">Contacto de Soporte</a>
-                <a href="https://misitio.com/manuales?modelo=<%= encodeURIComponent(product.nombre) %>" target="_blank">Manual de Usuario</a>
+                <a href="https://www.barmesapumps.com" target="_blank">Guia de Instalacion</a>
+                <a class="promotion-div <%= product.support_channel === 'Whatsapp' ? 'whatsapp-promo' : (product.support_channel === 'Chatbot' ? 'chatbot-promo' : '') %>" href="https://www.barmesapumps.com" target="_blank">Contacto de Soporte por <%= product.support_channel %></a>
+                <a href="https://www.barmesapumps.com" target="_blank">Manual de Usuario</a>
                 <a href="https://genmann.com/wp-content/uploads/2023/05/ficha_13kW-GMD13-YD480D.pdf" target="_blank">Ficha Tecnica</a>
             </div>
 

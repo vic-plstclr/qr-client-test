@@ -132,14 +132,19 @@ app.get('/:qr_uuid', async (req, res) => {
 
 
     // Realiza la búsqueda del producto usando los UUIDs normalizados
-    const product = products.find(p => p.qr_uuid === requestedUuid); 
-    const promotionEndDate = new Date('2025-06-06T00:00:00Z');
+    const product = products.find(p => p.qr_uuid === requestedUuid);
+    const promotionEndDate = new Date(product.product_warranty_due_date);
+    const promotionEndDateFormatted = promotionEndDate.toLocaleDateString('es-ES', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit'
+    });
 
     console.log('Found product:', product);
 
     if (product) {
         console.log(`Product found for UUID: ${requestedUuid}. Name: ${product.nombre}`);
-        res.render('product_detail', { product: product, promotionEndDate: promotionEndDate });
+        res.render('product_detail', { product: product, promotionEndDate: promotionEndDate, promotionEndDateFormatted: promotionEndDateFormatted });
     } else {
         console.log(`Product not found for UUID: ${requestedUuid}`);
         res.status(404).render('404_product_not_found');
