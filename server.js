@@ -18,7 +18,7 @@ app.use(express.json());
 
 let products = [];
 // Duración del caché de los productos (5 minutos)
-const CACHE_DURATION_MS = 10 * 1000; 
+const CACHE_DURATION_MS = 15 * 1000; 
 let lastFetchTime = 0;
 
 // Función auxiliar para normalizar UUIDs
